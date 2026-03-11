@@ -35,8 +35,18 @@
   .header-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; transition: background .2s; }
   .header-icon:hover { background: var(--light-gray); }
   .header-icon svg { width: 20px; height: 20px; stroke: var(--black); stroke-width: 1.5; fill: none; }
-  .logo-wrap { position: absolute; left: 50%; transform: translateX(-50%); cursor: pointer; display: flex; align-items: center; }
-  .logo-wrap img { height: 90px; width: auto; object-fit: contain; display: block; }
+  .logo-wrap { position: absolute; left: 50%; transform: translateX(-50%); cursor: pointer; display: flex; align-items: center; perspective: 800px; }
+  .logo-wrap img { 
+    height: 90px; width: auto; object-fit: contain; display: block; 
+    mix-blend-mode: multiply; 
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05));
+    transform-style: preserve-3d;
+  }
+  .logo-wrap:hover img {
+    transform: rotateY(15deg) rotateX(5deg) scale(1.1);
+    filter: drop-shadow(15px 15px 25px rgba(0,0,0,0.12));
+  }
   .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--black); display: none; }
   .cart-btn { position: relative; }
   .cart-count { position: absolute; top: -4px; right: -4px; background: var(--gold); color: var(--white); font-size: 10px; font-weight: 500; width: 17px; height: 17px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
@@ -186,6 +196,67 @@
   .contact-info-item p { font-size: 18px; font-weight: 500; color: var(--black); }
   .contact-info-item a { color: var(--black); text-decoration: none; transition: color .2s; }
   .contact-info-item a:hover { color: var(--gold); }
+
+  /* RESPONSIVE MEDIA QUERIES */
+  @media (min-width: 768px) {
+    header { padding: 0 40px; }
+    .hero { height: 500px; }
+    .hero-text { font-size: 48px; }
+    
+    .collections { flex-direction: row; gap: 15px; padding: 0 40px 60px; }
+    .collection-card { flex: 1; height: 350px; }
+    
+    .products-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 0 40px 80px; }
+    .products-header { padding: 30px 40px 20px; }
+    
+    .product-detail { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; padding: 40px 20px 80px; }
+    .pd-img-section { flex: 1; min-width: 400px; }
+    .pd-info-section { flex: 1; min-width: 350px; padding-left: 40px; }
+    .pd-img { border-radius: 4px; }
+    .pd-gallery { padding-left: 0; padding-right: 0; }
+    .pd-info { padding: 0; }
+    
+    .related-title { padding: 40px 0 20px; font-size: 12px; border-top: 1px solid var(--border); margin-top: 40px; width: 100%; }
+    .related-scroll { padding: 0; width: 100%; justify-content: flex-start; }
+    .related-card { flex: 0 0 180px; }
+
+    .about-hero { height: 300px; }
+    .about-hero h2 { font-size: 42px; }
+
+    .contact-info-card { display: flex; justify-content: space-around; padding: 50px 30px; }
+    .contact-info-item { margin-bottom: 0; }
+
+    .logo-wrap img { height: 110px; }
+    header { height: 120px; }
+    
+    .footer-logo { font-size: 24px; }
+    .footer-links a { font-size: 12px; }
+    footer { padding: 60px 40px; }
+
+    /* Fix cart position on large screens */
+    .cart-drawer { width: 400px; left: auto; right: 0; transform: translateX(100%); }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-overlay { z-index: 200; }
+  }
+
+  @media (min-width: 1024px) {
+    .products-grid { grid-template-columns: repeat(4, 1fr); max-width: 1400px; margin: 0 auto; }
+    .hero { height: 70vh; max-height: 800px; }
+    .hero-text { font-size: 72px; }
+    
+    .pd-info-section { padding-left: 80px; }
+    .pd-name { font-size: 48px; }
+    .pd-price { font-size: 32px; }
+
+    .collections { gap: 24px; max-width: 1400px; margin: 0 auto; }
+    .section-title { font-size: 20px; padding: 60px 0 30px; }
+  }
+
+  /* PREMIUM TOUCHES */
+  .product-card { box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: transform .3s ease, box-shadow .3s ease; }
+  .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
+  .add-btn, .order-btn, .continue-btn { transition: transform .2s ease, background .3s; }
+  .add-btn:active, .order-btn:active, .continue-btn:active { transform: scale(0.98); }
 </style>
 </head>
 <body>
@@ -358,20 +429,24 @@
         <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Retour
       </button>
     </div>
-    <img class="pd-img" id="pdImg" src="" alt="">
-    <div class="pd-gallery" id="pdGallery"></div>
-    <div class="pd-info">
-      <div class="pd-name" id="pdName"></div>
-      <div class="pd-price" id="pdPrice"></div>
-      <div class="label-sm">Taille</div>
-      <div class="sizes" id="pdSizes"></div>
-      <div class="qty-order">
-        <div class="qty-ctrl">
-          <button class="qty-btn" onclick="changeQty(-1)">−</button>
-          <div class="qty-num" id="pdQty">1</div>
-          <button class="qty-btn" onclick="changeQty(1)">+</button>
+    <div class="pd-img-section">
+      <img class="pd-img" id="pdImg" src="" alt="">
+      <div class="pd-gallery" id="pdGallery"></div>
+    </div>
+    <div class="pd-info-section">
+      <div class="pd-info">
+        <div class="pd-name" id="pdName"></div>
+        <div class="pd-price" id="pdPrice"></div>
+        <div class="label-sm">Taille</div>
+        <div class="sizes" id="pdSizes"></div>
+        <div class="qty-order">
+          <div class="qty-ctrl">
+            <button class="qty-btn" onclick="changeQty(-1)">−</button>
+            <div class="qty-num" id="pdQty">1</div>
+            <button class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <button class="add-btn" onclick="addToCart()">Ajouter au panier</button>
         </div>
-        <button class="add-btn" onclick="addToCart()">Ajouter au panier</button>
       </div>
     </div>
     <div class="related-title">Produits similaires</div>
