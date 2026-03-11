@@ -17,12 +17,13 @@
     --border: #d8d4cc;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--black); overflow-x: hidden; width: 100%; -webkit-tap-highlight-color: transparent; }
+  img { -webkit-user-drag: none; user-select: none; -webkit-user-select: none; }
 
   /* TICKER */
-  .ticker { background: var(--black); color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 500; font-style: italic; letter-spacing: 3px; text-transform: uppercase; padding: 14px 0; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .ticker-track { display: flex; animation: ticker-step 12s infinite cubic-bezier(0.76, 0, 0.24, 1); }
-  .ticker-item { flex: 0 0 100%; text-align: center; }
+  .ticker { background: var(--black); color: var(--white); font-family: 'Cormorant Garamond', serif; font-size: 14px; font-weight: 500; font-style: italic; letter-spacing: 3px; text-transform: uppercase; padding: 14px 0; overflow: hidden; position: relative; border-bottom: 1px solid rgba(255,255,255,0.1); width: 100%; }
+  .ticker-track { display: flex; animation: ticker-step 12s infinite cubic-bezier(0.76, 0, 0.24, 1); width: 100%; }
+  .ticker-item { flex: 0 0 100%; text-align: center; white-space: nowrap; }
   @keyframes ticker-step {
     0%, 28% { transform: translateX(0); }
     33.33%, 61.33% { transform: translateX(-100%); }
@@ -31,20 +32,21 @@
   }
 
   /* HEADER */
-  header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--border); padding: 0 20px; height: 100px; display: flex; align-items: center; justify-content: space-between; }
-  .header-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; transition: background .2s; }
+  header { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid var(--border); padding: 0 15px; height: 80px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
+  .header-icon { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 50%; transition: background .2s; flex-shrink: 0; }
   .header-icon:hover { background: var(--light-gray); }
-  .header-icon svg { width: 20px; height: 20px; stroke: var(--black); stroke-width: 1.5; fill: none; }
-  .logo-wrap { position: absolute; left: 50%; transform: translateX(-50%); cursor: pointer; display: flex; align-items: center; perspective: 800px; }
+  .header-icon svg { width: 18px; height: 18px; stroke: var(--black); stroke-width: 1.5; fill: none; }
+  .logo-wrap { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); cursor: pointer; display: flex; align-items: center; perspective: 1000px; z-index: 10; max-width: 50%; }
   .logo-wrap img { 
-    height: 90px; width: auto; object-fit: contain; display: block; 
+    height: 65px; width: auto; max-width: 100%; object-fit: contain; display: block; 
     mix-blend-mode: multiply; 
     transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), filter 0.6s ease;
     filter: drop-shadow(0 5px 10px rgba(0,0,0,0.05));
     transform-style: preserve-3d;
+    pointer-events: none; /* Prevent dragging the image directly */
   }
   .logo-wrap:hover img {
-    transform: rotateY(15deg) rotateX(5deg) scale(1.1);
+    transform: rotateY(15deg) rotateX(5deg) scale(1.05);
     filter: drop-shadow(15px 15px 25px rgba(0,0,0,0.12));
   }
   .logo-text { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 600; letter-spacing: 4px; text-transform: uppercase; color: var(--black); display: none; }
